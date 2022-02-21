@@ -1,0 +1,22 @@
+<launch>
+  <arg name="gnss_noise_x" default="0.1"/>
+  <arg name="gnss_noise_y" default="0.1"/>
+  <arg name="gnss_noise_z" default="0.15"/>
+  <arg name="model_noise_vv" default="0.19"/>
+  <arg name="model_noise_vw" default="0.001"/>
+  <arg name="model_noise_wv" default="0.13"/>
+  <arg name="model_noise_ww" default="0.2"/>
+
+  <arg name="timeout" default="0.5"/>
+
+  <node pkg="fusion_localizer" exec="fusion_localizer_node" name="fusion_localizer_node" output="screen">
+    <param name="gnss_noise_x" value="$(var gnss_noise_x)"/>
+    <param name="gnss_noise_y" value="$(var gnss_noise_y)"/>
+    <param name="gnss_noise_z" value="$(var gnss_noise_z)"/>
+    <param name="model_noise_vv" value="$(var model_noise_vv)"/>
+    <param name="model_noise_vw" value="$(var model_noise_vw)"/>
+    <param name="model_noise_wv" value="$(var model_noise_wv)"/>
+    <param name="model_noise_ww" value="$(var model_noise_ww)"/>
+    <param name="timeout" value="$(var timeout)"/>
+  </node>
+</launch>
