@@ -55,21 +55,19 @@ void FusionLocalizer::timerCallback()
   // observation update
   if (current_gnss_pose_ptr_ != nullptr) {
     rclcpp::Time gnss_time_stamp = rclcpp::Time(current_gnss_pose_ptr_->header.stamp);
-    //if ((gnss_time_stamp - current_time_stamp).seconds() < timeout_) {
-      Eigen::VectorXd z(3);
+    Eigen::VectorXd z(3);
 
-      z(0) = current_gnss_pose_ptr_->pose.position.x;
-      z(1) = current_gnss_pose_ptr_->pose.position.y;
-      double roll, pitch, yaw;
-      tf2::Quaternion quat(
-        current_gnss_pose_ptr_->pose.orientation.x, current_gnss_pose_ptr_->pose.orientation.y,
-        current_gnss_pose_ptr_->pose.orientation.z, current_gnss_pose_ptr_->pose.orientation.w);
-      tf2::Matrix3x3 mat(quat);
-      mat.getRPY(roll, pitch, yaw);
-      z(2) = kalman_filter_ptr_->normalize(yaw);
+    z(0) = current_gnss_pose_ptr_->pose.position.x;
+    z(1) = current_gnss_pose_ptr_->pose.position.y;
+    double roll, pitch, yaw;
+    tf2::Quaternion quat(
+      current_gnss_pose_ptr_->pose.orientation.x, current_gnss_pose_ptr_->pose.orientation.y,
+      current_gnss_pose_ptr_->pose.orientation.z, current_gnss_pose_ptr_->pose.orientation.w);
+    tf2::Matrix3x3 mat(quat);
+    mat.getRPY(roll, pitch, yaw);
+    z(2) = kalman_filter_ptr_->normalize(yaw);
 
-      kalman_filter_ptr_->update(z);
-//    }
+    kalman_filter_ptr_->update(z);
   } else {
     RCLCPP_ERROR(get_logger(), "gnss pose is not set.");
   }
