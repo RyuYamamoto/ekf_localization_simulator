@@ -1,15 +1,18 @@
 <launch>
-  <arg name="gnss_noise_x" default="0.1"/>
-  <arg name="gnss_noise_y" default="0.1"/>
-  <arg name="gnss_noise_z" default="0.15"/>
-  <arg name="model_noise_vv" default="0.19"/>
-  <arg name="model_noise_vw" default="0.001"/>
-  <arg name="model_noise_wv" default="0.13"/>
-  <arg name="model_noise_ww" default="0.2"/>
+  <arg name="gnss_noise_x" default="1.0"/>
+  <arg name="gnss_noise_y" default="1.0"/>
+  <arg name="gnss_noise_z" default="1.0"/>
+  <arg name="model_noise_vv" default="0.0"/>
+  <arg name="model_noise_vw" default="0.0"/>
+  <arg name="model_noise_wv" default="0.0"/>
+  <arg name="model_noise_ww" default="0.0"/>
 
   <arg name="timeout" default="0.5"/>
 
   <node pkg="fusion_localizer" exec="fusion_localizer_node" name="fusion_localizer_node" output="screen">
+    <remap from="gnss" to="/gnss_pose"/>
+    <remap from="twist" to="/vehicle/status/twist"/>
+    <remap from="imu" to="/imu/data"/>
     <param name="gnss_noise_x" value="$(var gnss_noise_x)"/>
     <param name="gnss_noise_y" value="$(var gnss_noise_y)"/>
     <param name="gnss_noise_z" value="$(var gnss_noise_z)"/>
